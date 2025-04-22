@@ -1,1 +1,2 @@
 # master-thesis-sound-localization
+This folder will contain the full documentation and implementation of my Master’s thesis, focused on acoustic source localization using vehicle-mounted microphone arrays in complex urban environments. The work addresses challenges such as Doppler shift, reverberation, and low signal-to-noise ratio through advanced beamforming algorithms. Full content will be uploaded upon official submission.
