@@ -1,132 +1,50 @@
-Sound Source Localization – MATLAB/Simulink (TUHH × Valeo)
+🧠 Source Code Overview (/src)
 
-End-to-end toolbox for simulating, training, and evaluating acoustic source localization using:
+This folder contains all MATLAB source files used in the Sound Source Localization – TUHH × Valeo project.
+It includes the simulation environment, data generation tools, classical DSP baselines, and deep learning (DNN) models.
+____________________________________________________________________________________________________________________________________________________________________
+🎛️ GUI Entry Points
+File	Description
+AcousticAnalysisGUI.m	Main control panel. Launch this to access the full pipeline — dataset generation, DNN training/inference, beamforming, benchmarking, and visualization. It serves as the project’s front-end and integrates all other modules.
+FastHybridDopplerReverbSimulator_GUI.m	Acoustic simulation GUI. Generates synthetic impulse responses (IRs) and datasets under configurable conditions — mic array geometry (1D–3D), source motion, SNR, noise type, and reverberation. Can run standalone or be called from the main GUI.
+____________________________________________________________________________________________________________________________________________________________________
+🧩 Dataset & IR Utilities
+File	Description
+generateAcousticDataset.m	Builds balanced datasets by combining synthetic and real IRs across multiple environments. Supports automatic labeling for DNN training.
+IRs_comparison_analysis_tool3.m	Aligns synthetic vs. real recordings in time/frequency domains. Computes similarity metrics (e.g., correlation, spectral distance) to assess IR realism.
+reflection_understanding.m	Utility for modeling and visualizing reflections and reverberation behavior to better understand acoustic propagation effects.
+🎧 Beamforming & Classical DSP
+File	Description
+room_beamforming_and_comparison.m	Implements and compares beamforming algorithms (CBF, SC-DAMAS, OMP-DAMAS) for azimuth, elevation, and distance estimation. Produces performance metrics and plots for benchmarking against DNN models.
+____________________________________________________________________________________________________________________________________________________________________
+🤖 Deep Learning Models (Training & Inference)
+File	Description
+DNN_azimuth_est_clean_noisy1.m	Trains and evaluates deep neural networks for azimuth estimation using clean and noisy datasets.
+DNN_elevation_est_clean_noisy1.m	DNN for elevation angle estimation under varying noise levels and SNR conditions.
+DNN_distance_est_clean_noisy1.m	DNN for source distance prediction based on IRs or convolved signals.
+DNN_combined_3D_localization.m	Joint 3D model predicting azimuth, elevation, and distance simultaneously. Integrates all previous models for end-to-end localization.
+____________________________________________________________________________________________________________________________________________________________________
+🔬 Typical Workflow (Inside /src)
 
-Synthetic + real impulse responses (IRs)
+Run FastHybridDopplerReverbSimulator_GUI.m
+→ Generate synthetic IRs and configure microphone geometry, noise, and environment parameters.
 
-Classical beamforming (CBF / SC-DAMAS / OMP-DAMAS)
+Optionally run generateAcousticDataset.m
+→ Build structured datasets for DNN training or hybrid testing.
 
-Deep neural networks (DNNs) for azimuth, elevation, and distance
+Train and evaluate models:
 
-GUI front-ends for both simulation and analysis
+DNNs → Run one of the DNN_* scripts.
 
-Tip: Start with AcousticAnalysisGUI.m (main launcher).
-The simulator GUI (FastHybridDopplerReverbSimulator_GUI.m) can be run standalone or from the main GUI.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-File map
-GUIs (entry points)
+Classical → Run room_beamforming_and_comparison.m.
 
-AcousticAnalysisGUI.m
-Main control panel. Orchestrates dataset generation, DNN training/inference, beamforming pipelines, and IR benchmarking. Provides access to all modules below.
+Compare results in the main GUI (AcousticAnalysisGUI.m)
+→ Plot, analyze, and export metrics.
+____________________________________________________________________________________________________________________________________________________________________
+⚙️ Notes
 
-FastHybridDopplerReverbSimulator_GUI.m
-Acoustic scene simulator. Generates signals/IRs under configurable conditions:
-mic-array geometry (1D → 3D), source motion (Doppler), reverberation, noise type/SNR, time/frequency/hybrid processing, and IR convolution/deconvolution.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-Dataset & IR tools
+All scripts are modular — you can run them independently or through the main GUI.
 
-generateAcousticDataset.m
-Builds balanced datasets (synthetic + real) by stacking/combining IRs across scenarios.
+The simulator supports time-domain, frequency-domain, and hybrid signal processing pipelines.
 
-IRs_comparison_analysis_tool3.m
-Aligns and compares synthetic vs. real recordings (time/frequency-domain metrics) to validate simulation fidelity.
-
-reflection_understanding.m
-Helpers for modeling/inspecting reflections & reverberation characteristics.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-Beamforming & classical DSP
-
-room_beamforming_and_comparison.m
-Runs CBF, SC-DAMAS, and OMP-DAMAS for AoA (azimuth/elevation) and distance estimation; benchmarks versus DNN outputs.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-Deep learning (training/inference)
-
-DNN_azimuth_est_clean_noisy1.m
-Train/infer DNN for azimuth localization on clean/noisy data.
-
-DNN_elevation_est_clean_noisy1.m
-Train/infer DNN for elevation localization on clean/noisy data.
-
-DNN_distance_est_clean_noisy1.m
-Train/infer DNN for distance estimation.
-
-DNN_combined_3D_localization.m
-Joint model for azimuth + elevation + distance (3D localization).
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-Typical workflows
-1) Generate synthetic data / IRs
-
-Run FastHybridDopplerReverbSimulator_GUI.m.
-
-Choose array geometry (1D/2D/3D), source motion, SNR/noise, reverberation model, and processing mode (time/freq/hybrid).
-
-Export audio/IRs or use generateAcousticDataset.m to build a balanced dataset.
-
-2) Validate sim vs. real recordings
-
-Use IRs_comparison_analysis_tool3.m to align and benchmark synthetic vs. real recordings (FFT/DSP metrics, IR similarity).
-
-3) Train & evaluate models
-
-Beamforming: room_beamforming_and_comparison.m
-
-DNNs: one of the DNN_* scripts (or the combined model).
-Compare accuracy/latency/robustness; hybridize if helpful (e.g., OMP-DAMAS for AoA + DNN for distance).
-
-4) End-to-end control
-
-Launch AcousticAnalysisGUI.m to run the full pipeline via GUI (dataset → training/inference → comparisons → plots/exports).
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-Key features
-
-Mic arrays with customizable geometry (linear, planar, volumetric)
-
-Doppler and reverberation modeling
-
-SNR & noise type controls; signal conditioning and filtering
-
-IR convolution/deconvolution
-
-Beamforming baselines vs. DNN models
-
-Balanced synthetic + real datasets
-
-Plots, metrics, and reproducible exports
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-Requirements
-
-MATLAB (R2021b+ recommended)
-Toolboxes: Signal Processing, DSP System, Phased Array (recommended), Deep Learning.
-
-Optional: Simulink (for some blocks/workflows).
-
-Real recordings (optional) for benchmarking.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-Quick start
-
-Open MATLAB in this folder.
-
-Run:
-
-AcousticAnalysisGUI
-% or, to build synthetic data first
-FastHybridDopplerReverbSimulator_GUI
-
-
-Follow on-screen steps to generate data, train, and evaluate.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-Notes
-
-The simulator supports both time-domain, frequency-domain, and hybrid pipelines.
-
-DNN scripts accept either raw audio or GAF/feature representations, depending on configuration inside each file.
-
-For reproducibility across environments, packaging via Docker was used in the broader project (outside pure MATLAB scope).
-
-Citation / Thesis
-
-This code accompanies my TUHH × Valeo master’s thesis on acoustic source localization with synthetic/real IRs, beamforming baselines, and DNNs.
-The full thesis document is linked in my LinkedIn profile under Education → TUHH.
-____________________________________________________________________________________________________________________________________________________________________________________________________________________
-License
-For academic evaluation and non-commercial use. Contact the author for other licensing terms.
+DNNs can be trained on synthetic data, real data, or a mix (transfer learning ready).
