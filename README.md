@@ -1,88 +1,81 @@
-# master-thesis-sound-localization
-This folder will contain the full documentation and implementation of my Master’s thesis, focused on acoustic source localization using vehicle-mounted microphone arrays in complex urban environments. The work addresses challenges such as Doppler shift, reverberation, and low signal-to-noise ratio through advanced beamforming algorithms. Full content will be uploaded upon official submission.
+🎧 Sound Source Localization – MATLAB/Simulink (TUHH × Valeo)
 
-🧠 SC-DAMAS Simulation: Acoustic Imaging in Reverberant Fields
-This MATLAB-based simulation implements the beamforming and deconvolution techniques described in the thesis paper:
+An end-to-end MATLAB toolbox for acoustic source localization, combining classical beamforming and deep learning (DNN) approaches.
+Developed as part of my Master’s thesis in Mechatronics at TUHH, in collaboration with Valeo (ADAS Team).
+____________________________________________________________________________________________________________________________________________________________________
+🚀 Overview
 
+This project enables simulation, training, and evaluation of 3D sound localization systems under realistic acoustic conditions.
 
-It supports:
+It provides:
 
-Room geometry setup
+Synthetic & real impulse response (IR) generation
 
-Room impulse response (RIR) modeling using the mirror source method
+Beamforming (CBF / SC-DAMAS / OMP-DAMAS) and DNN-based localization
 
-Signal simulation with added noise
+Configurable microphone array geometries (1D → 3D)
 
-Acoustic source imaging via CBF, OMP-DAMAS, and SC-DAMAS
+Noise, Doppler, and reverberation modeling
 
-🔁 Workflow Overview
+GUI-based end-to-end control
 
-A[1. room_geometry_setup.m] --> B[2. rir_generator.m (custom)]
-B --> C[3. simulate_microphone_signals.m]
-C --> D[4. sc_damas.m (beamforming + deconvolution)]
+Reproducible results & benchmarks
 
-📂 File Descriptions
-room_geometry_setup.m ✅
-Purpose:
-Defines the dimensions of the room, source location, and sensor array. Calculates frequency-dependent reflection coefficients for each wall.
+💡 Start here: AcousticAnalysisGUI.m — this launches the full interactive GUI.
+____________________________________________________________________________________________________________________________________________________________________
+📂 Repository Structure
+Folder	Description
+src/	Contains all MATLAB source code, including GUIs, DNN modules, simulation tools, and DSP utilities.
+results/	Stores simulation and evaluation outputs — plots, metrics, and benchmark data comparing DNN vs. beamforming.
+docs/	Contains the master’s thesis PDF and additional documentation describing the algorithms and experiments.
+____________________________________________________________________________________________________________________________________________________________________
+🧩 Key Features
 
-Output:
+Hybrid simulation environment: time-domain, frequency-domain, or mixed processing
 
-room_geometry_setup.mat (contains: roomDim, sourcePos, micPositions, reflection_coef, etc.)
+DNN models for azimuth, elevation, and distance estimation
 
-rir_generator.m (custom mirror source implementation) ✅
-Purpose:
-Implements the mirror image source method to compute the room impulse response (RIR) and its frequency-domain version.
+Beamforming baselines for comparative benchmarking
 
-Output:
+Acoustic simulator GUI for controlled dataset generation
 
-room_impulse_response.mat (contains: impulse_responses, H, freq_vector, t, etc.)
+Balanced datasets (synthetic + real recordings)
 
-simulate_microphone_signals.m ✅
-Purpose:
-Convolves a test signal (chirp) with the RIRs to simulate what each microphone "hears", and adds noise to simulate low SNR conditions.
+Dockerized environment for reproducibility (outside MATLAB scope)
+____________________________________________________________________________________________________________________________________________________________________
+🧠 Example Workflow
 
-Output:
+Generate synthetic IRs / datasets
+Run FastHybridDopplerReverbSimulator_GUI.m to define mic geometry, source motion, and acoustic conditions.
 
-simulated_microphone_signals.mat (contains: clean_signals, noisy_signals, SNR_dB, fs, t)
+Train DNN models
+Use one of the DNN_* scripts or the combined 3D model.
 
-sc_damas.m ✅
-Purpose:
-Performs acoustic source localization using:
+Evaluate & compare
+Run room_beamforming_and_comparison.m to benchmark beamforming vs. DNN performance.
 
-CBF (Conventional Beamforming)
-
-OMP-DAMAS
-
-SC-DAMAS (Sparse CoSaMP-based variant)
-
-Visualizes results as beamformed power maps and compares accuracy (vs. ground truth).
-
-Output:
-
-sc_damas_results.mat (beamforming results and localization metrics)
-
-📊 Visualization Matches Paper
-The generated figures match:
-
-Fig. 3: Sound pressure distributions
-
-Figs. 4–6: Acoustic maps of beamforming methods
-
-Table 3: Localization performance
-
+Full pipeline GUI
+Use AcousticAnalysisGUI.m to manage all stages from dataset generation to analysis.
+____________________________________________________________________________________________________________________________________________________________________
 ⚙️ Requirements
-MATLAB R2020+ (earlier versions should work too)
 
-Signal Processing Toolbox (for chirp, fft, etc.)
+MATLAB R2021b+
 
-Plots and saving handled natively (no additional dependencies)
+Toolboxes: Signal Processing, DSP System, Phased Array (recommended), Deep Learning
 
-✅ Status
+Optional: Simulink
 
-Step	Task	Status
-1	Room geometry setup	✅ Complete
-2	Generate room impulse responses	✅ Complete
-3	Simulate received signals (with noise)	✅ Complete
-4	Implement SC-DAMAS	✅ Complete
-5	Compare with CBF and OMP-DAMAS	✅ Complete
+Optional: Real recordings for IR benchmarking
+____________________________________________________________________________________________________________________________________________________________________
+🧾 Thesis Reference
+
+This repository accompanies my Master’s thesis:
+
+“Deep Learning-Based Acoustic Source Localization Using Synthetic and Real Impulse Responses.”
+The full thesis PDF is located under /docs
+____________________________________________________________________________________________________________________________________________________________________
+
+📜 License
+
+This repository is released for academic and non-commercial use.
+For other use cases, please contact the author directly.
